@@ -2,169 +2,190 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DEMON X PANEL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DEMON X PANEL V2.0</title>
 
-<style>
-* { box-sizing: border-box; }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-  margin: 0;
-  padding: 20px;
-  background: #090909;
-  color: white;
-  font-family: Arial, sans-serif;
-}
+        body {
+            background: #080808;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-header {
-  text-align: center;
-  padding: 25px 10px;
-  border-bottom: 1px solid #ff2020;
-}
+        .container {
+            max-width: 450px;
+            margin: auto;
+            background: #151515;
+            border: 1px solid #ff2020;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 0 20px #ff000044;
+        }
 
-h1 {
-  color: #ff2020;
-  text-shadow: 0 0 15px red;
-  letter-spacing: 3px;
-}
+        h1 {
+            color: #ff2020;
+            text-align: center;
+            font-size: 27px;
+        }
 
-.card {
-  background: #171717;
-  border: 1px solid #393939;
-  border-radius: 14px;
-  padding: 18px;
-  margin: 18px auto;
-  max-width: 480px;
-}
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+        }
 
-h2 { color: #ff3030; }
+        label {
+            display: block;
+            margin-top: 18px;
+            color: #ff4545;
+        }
 
-.setting {
-  margin: 22px 0;
-}
+        select, input {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            background: #252525;
+            border: 1px solid #444;
+            border-radius: 9px;
+            color: white;
+        }
 
-input[type=range] {
-  width: 100%;
-  accent-color: red;
-}
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 15px;
+            border: none;
+            border-radius: 9px;
+            background: #ff2020;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
 
-button {
-  background: #e60000;
-  border: none;
-  color: white;
-  padding: 13px;
-  border-radius: 8px;
-  font-weight: bold;
-  width: 100%;
-  margin-top: 10px;
-}
+        .result {
+            margin-top: 25px;
+            display: none;
+        }
 
-button:active { background: #990000; }
+        .item {
+            background: #252525;
+            padding: 13px;
+            margin: 9px 0;
+            border-radius: 9px;
+            display: flex;
+            justify-content: space-between;
+        }
 
-.value { color: #ff4545; }
+        .value {
+            color: #ff3939;
+            font-weight: bold;
+        }
 
-footer {
-  text-align: center;
-  color: #777;
-  margin: 25px;
-  font-size: 12px;
-}
-</style>
+        .note {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
-  <h1>🔥 DEMON X PANEL</h1>
-  <p>FREE FIRE SETTINGS DASHBOARD</p>
-  <small>VERSION 2.0 | LOCAL MODE</small>
-</header>
+<div class="container">
 
-<div class="card" id="login">
-  <h2>LOGIN</h2>
-  <input id="username" placeholder="Enter username"
-   style="width:100%;padding:12px">
-  <button onclick="login()">ENTER PANEL</button>
+    <h1>DEMON X PANEL</h1>
+    <p class="subtitle">V2.0 | SMART SENSITIVITY</p>
+
+    <label>Phone Model</label>
+    <input id="phone" placeholder="Enter phone model">
+
+    <label>DPI</label>
+    <input id="dpi" type="number" value="400">
+
+    <label>Gameplay Style</label>
+    <select id="style">
+        <option value="balanced">Balanced</option>
+        <option value="rush">Rush / Aggressive</option>
+        <option value="precision">Precision</option>
+    </select>
+
+    <button onclick="generate()">GENERATE SENSITIVITY</button>
+
+    <div class="result" id="result">
+        <h2 style="color:#ff2020">YOUR SETTINGS</h2>
+
+        <div class="item">General <span class="value" id="general"></span></div>
+        <div class="item">Red Dot <span class="value" id="red_dot"></span></div>
+        <div class="item">2X Scope <span class="value" id="scope_2x"></span></div>
+        <div class="item">4X Scope <span class="value" id="scope_4x"></span></div>
+        <div class="item">Fire Button <span class="value" id="fire_button"></span></div>
+
+        <button onclick="copySettings()">COPY ALL SETTINGS</button>
+    </div>
+
+    <p class="note">
+        Recommended starting presets only. Test and adjust
+        settings according to your gameplay.
+    </p>
+
 </div>
-
-<div id="dashboard" hidden>
-  <div class="card">
-    <h2>⚡ SENSITIVITY</h2>
-    <div id="controls"></div>
-    <button onclick="save()">SAVE SETTINGS</button>
-    <button onclick="resetSettings()">RESET DEFAULTS</button>
-    <p id="status"></p>
-  </div>
-</div>
-
-<footer>DEMON X PANEL • PERSONAL SETTINGS TOOL</footer>
 
 <script>
-const names = {
- general: "General",
- red_dot: "Red Dot",
- scope_2x: "2x Scope",
- scope_4x: "4x Scope",
- fire_button: "Fire Button Size"
-};
+async function generate() {
+    const dpi = Number(document.getElementById("dpi").value);
 
-function login() {
- const name = document.getElementById("username").value.trim();
- if (!name) {
-   alert("Enter a username");
-   return;
- }
- document.getElementById("login").hidden = true;
- document.getElementById("dashboard").hidden = false;
- load();
+    if (!Number.isInteger(dpi) || dpi < 200 || dpi > 800) {
+        alert("Enter DPI between 200 and 800");
+        return;
+    }
+
+    try {
+        const response = await fetch("/generate", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                phone: document.getElementById("phone").value,
+                dpi: dpi,
+                style: document.getElementById("style").value
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error || "Generation failed");
+            return;
+        }
+
+        Object.keys(data).forEach(key => {
+            document.getElementById(key).textContent = data[key];
+        });
+
+        document.getElementById("result").style.display = "block";
+
+    } catch (error) {
+        alert("Server connection failed. Try again.");
+    }
 }
 
-async function load() {
- const response = await fetch("/settings");
- const data = await response.json();
+function copySettings() {
+    const keys = ["general", "red_dot", "scope_2x", "scope_4x", "fire_button"];
 
- document.getElementById("controls").innerHTML =
- Object.entries(data).map(([key,value]) => `
- <div class="setting">
-   <label>${names[key]}:
-   <b class="value" id="${key}_value">${value}</b>
-   </label>
-   <input type="range" min="0" max="200"
-    id="${key}" value="${value}"
-    oninput="document.getElementById('${key}_value').textContent=this.value">
- </div>
- `).join("");
-}
+    const output = keys.map(key =>
+        key.toUpperCase() + ": " +
+        document.getElementById(key).textContent
+    ).join("\n");
 
-async function save() {
- const data = {};
- Object.keys(names).forEach(key => {
-   data[key] = Number(document.getElementById(key).value);
- });
-
- const response = await fetch("/settings", {
-   method: "POST",
-   headers: {"Content-Type":"application/json"},
-   body: JSON.stringify(data)
- });
-
- if (response.ok) {
-   document.getElementById("status").textContent =
-     "✅ Settings saved successfully!";
- }
-}
-
-async function resetSettings() {
- await fetch("/reset", {method:"POST"});
- await load();
- document.getElementById("status").textContent =
-   "Settings restored to defaults!";
+    navigator.clipboard.writeText(output)
+        .then(() => alert("Settings copied!"))
+        .catch(() => alert("Copy failed. Try HTTPS."));
 }
 </script>
 
 </body>
 </html>
-
-
-
 

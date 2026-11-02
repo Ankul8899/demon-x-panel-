@@ -1,33 +1,48 @@
 
 from flask import Flask, render_template, request, jsonify
+import random
 
 app = Flask(__name__)
-
-settings = {
-    "general": 190,
-    "red_dot": 180,
-    "scope_2x": 170,
-    "scope_4x": 160,
-    "fire_button": 50
-}
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-@app.route("/settings", methods=["GET", "POST"])
-def update_settings():
-    if request.method == "POST":
-        data = request.get_json()
-        for key in settings:
-            if key in data:
-                settings[key] = max(0, min(200, int(data[key])))
-        return jsonify(settings)
+@app.route("/generate", methods=["POST"])
+def generate():
+    data = request.json
 
-    return jsonify(settings)
+    phone = data.get("phone", "normal")
+    style = data.get("style", "balanced")
+    dpi = int(data.get("dpi", 400))
+
+    if not 200 <= dpi <= 800:
+        return jsonify({"error": "DPI must be 200-800"}), 400
+
+    presets = {
+        "balanced": [185, 175, 165, 155, 100],
+        "rush": [195, 190, 180, 170, 100],
+        "precision": [175, 165, 155, 145, 50]
+    }
+
+    settings = presets.get(style, presets["balanced"])
+
+    # Small variation for personalized starting presets
+    variation = random.randint(-3, 3)
+
+    result = {
+        "general": max(0, min(200, settings[0] + variation)),
+        "red_dot": max(0, min(200, settings[1] + variation)),
+        "scope_2x": max(0, min(200, settings[2] + variation)),
+        "scope_4x": max(0, min(200, settings[3] + variation)),
+        "fire_button": settings[4]
+    }
+
+    return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8080)
+
 
 
 
