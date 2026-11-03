@@ -50,7 +50,7 @@ def setup():
 @app.route("/")
 def home():
     if not session.get("username"):
-        return render_template("login.html")
+        return render_template("index.html")
 
     return render_template("index.html")
 @app.route("/generate", methods=["POST"])
@@ -187,6 +187,7 @@ setup()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
 
