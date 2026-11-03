@@ -69,50 +69,6 @@ button{width:100%;padding:14px;margin-top:12px;background:#e32636;color:white;bo
 </div>
 
 <script>
-function showRegister(){
- loginPage.classList.add("hidden");
- registerPage.classList.remove("hidden");
-}
-function showLogin(){
- registerPage.classList.add("hidden");
- loginPage.classList.remove("hidden");
-}
-async function register(){
- const username=regUser.value.trim();
- const password=regPass.value;
- if(!username || !password){alert("Fill all fields");return}
- try{
- const r=await fetch("/register",{
- method:"POST",
- headers:{"Content-Type":"application/json"},
- body:JSON.stringify({username,password})
- });
- const d=await r.json();
- if(!r.ok)throw Error(d.error||"Registration failed");
- alert("Registration successful! Please login.");
- showLogin();
- }catch(e){alert(e.message)}
-}
-async function login(){
- const username=loginUser.value.trim();
- const password=loginPass.value;
- if(!username || !password){alert("Fill all fields");return}
- try{
- const r=await fetch("/login",{
- method:"POST",
- headers:{"Content-Type":"application/json"},
- body:JSON.stringify({username,password})
- });
- const d=await r.json();
- if(!r.ok)throw Error(d.error||"Login failed");
- loginPage.classList.add("hidden");
- dashboard.classList.remove("hidden");
- }catch(e){alert(e.message)}
-}
-function logout(){
- dashboard.classList.add("hidden");
- loginPage.classList.remove("hidden");
-}
 async function generateSensitivity(){
  const phone=document.getElementById("phone").value.trim();
  if(!phone){alert("Enter phone model");return}
@@ -153,5 +109,6 @@ function copySettings(){
 </script>
 </body>
 </html>
+
 
 
