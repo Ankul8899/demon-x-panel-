@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEMON X PANEL</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #090909;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 25px 10px;
+  border-bottom: 1px solid #ff2020;
+}
+
+h1 {
+  color: #ff2020;
+  text-shadow: 0 0 15px red;
+  letter-spacing: 3px;
+}
+
+.card {
+  background: #171717;
+  border: 1px solid #393939;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 18px auto;
+  max-width: 480px;
+}
+
+h2 { color: #ff3030; }
+
+.setting {
+  margin: 22px 0;
+}
+
+input[type=range] {
+  width: 100%;
+  accent-color: red;
+}
+
+button {
+  background: #e60000;
+  border: none;
+  color: white;
+  padding: 13px;
+  border-radius: 8px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button:active { background: #990000; }
+
+.value { color: #ff4545; }
+
+footer {
+  text-align: center;
+  color: #777;
+  margin: 25px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔥 DEMON X PANEL</h1>
+  <p>FREE FIRE SETTINGS DASHBOARD</p>
+  <small>VERSION 2.0 | LOCAL MODE</small>
+</header>
+
+<div class="card" id="login">
+  <h2>LOGIN</h2>
+  <input id="username" placeholder="Enter username"
+   style="width:100%;padding:12px">
+  <button onclick="login()">ENTER PANEL</button>
+</div>
+
+<div id="dashboard" hidden>
+  <div class="card">
+    <h2>⚡ SENSITIVITY</h2>
+    <div id="controls"></div>
+    <button onclick="save()">SAVE SETTINGS</button>
+    <button onclick="resetSettings()">RESET DEFAULTS</button>
+    <p id="status"></p>
+  </div>
+</div>
+
+<footer>DEMON X PANEL • PERSONAL SETTINGS TOOL</footer>
+
+<script>
+const names = {
+ general: "General",
+ red_dot: "Red Dot",
+ scope_2x: "2x Scope",
+ scope_4x: "4x Scope",
+ fire_button: "Fire Button Size"
+};
+
+function login() {
+ const name = document.getElementById("username").value.trim();
+ if (!name) {
+   alert("Enter a username");
+   return;
+ }
+ document.getElementById("login").hidden = true;
+ document.getElementById("dashboard").hidden = false;
+ load();
+}
+
+async function load() {
+ const response = await fetch("/settings");
+ const data = await response.json();
+
+ document.getElementById("controls").innerHTML =
+ Object.entries(data).map(([key,value]) => `
+ <div class="setting">
+   <label>${names[key]}:
+   <b class="value" id="${key}_value">${value}</b>
+   </label>
+   <input type="range" min="0" max="200"
+    id="${key}" value="${value}"
+    oninput="document.getElementById('${key}_value').textContent=this.value">
+ </div>
+ `).join("");
+}
+
+async function save() {
+ const data = {};
+ Object.keys(names).forEach(key => {
+   data[key] = Number(document.getElementById(key).value);
+ });
+
+ const response = await fetch("/settings", {
+   method: "POST",
+   headers: {"Content-Type":"application/json"},
+   body: JSON.stringify(data)
+ });
+
+ if (response.ok) {
+   document.getElementById("status").textContent =
+     "✅ Settings saved successfully!";
+ }
+}
+
+async function resetSettings() {
+ await fetch("/reset", {method:"POST"});
+ await load();
+ document.getElementById("status").textContent =
+   "Settings restored to defaults!";
+}
+</script>
+
+</body>
+</html>
+
+
+
+
