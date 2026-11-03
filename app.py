@@ -48,57 +48,6 @@ def setup():
     con.close()
 
 @app.route("/")
-def home():
-    return render_template("index.html")
-
-@app.route("/register", methods=["POST"])
-def register():
-    data = request.get_json(silent=True) or {}
-    username = data.get("username", "").strip()
-    password = data.get("password", "")
-
-    if len(username) < 3 or len(password) < 8:
-        return jsonify(error="Username min 3 and password min 8 characters."), 400
-
-    con = db()
-    try:
-        con.execute(
-            "INSERT INTO users(username,password) VALUES (?,?)",
-            (username, generate_password_hash(password))
-        )
-        con.commit()
-        return jsonify(message="Registration successful!"), 201
-    except sqlite3.IntegrityError:
-        return jsonify(error="Username already exists."), 409
-    finally:
-        con.close()
-
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json(silent=True) or {}
-    username = data.get("username", "").strip()
-    password = data.get("password", "")
-
-    con = db()
-    try:
-        user = con.execute(
-            "SELECT password FROM users WHERE username=?",
-            (username,)
-        ).fetchone()
-    finally:
-        con.close()
-
-    if not user or not check_password_hash(user[0], password):
-        return jsonify(error="Invalid username or password."), 401
-
-    session.clear()
-    session["username"] = username
-    return jsonify(message="Login successful!")
-
-@app.route("/logout", methods=["POST"])
-def logout():
-    session.clear()
-    return jsonify(message="Logged out.")
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -234,6 +183,7 @@ setup()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
 
