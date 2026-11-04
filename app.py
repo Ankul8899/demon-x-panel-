@@ -55,9 +55,6 @@ def home():
     return render_template("index.html")
 @app.route("/generate", methods=["POST"])
 def generate():
-    if not session.get("username"):
-        return jsonify(error="Please login first."), 401
-
     data = request.get_json(silent=True) or {}
 
     phone = str(data.get("phone", "")).strip()
@@ -130,10 +127,6 @@ def generate():
 
 @app.route("/settings", methods=["GET", "POST"])
 def update_settings():
-    username = session.get("username")
-    if not username:
-        return jsonify(error="Please login."), 401
-
     con = db()
     try:
         if request.method == "POST":
@@ -168,9 +161,6 @@ def update_settings():
 
 @app.route("/reset", methods=["POST"])
 def reset():
-    username = session.get("username")
-    if not username:
-        return jsonify(error="Please login."), 401
 
     con = db()
     try:
@@ -187,6 +177,8 @@ setup()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+
 
 
 
