@@ -1,183 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DEMON X PANEL V3.0</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Sensitivity Generator</title>
+
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#090909;color:white;
- font-family:Arial,sans-serif;
+
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
-header{
- background:#160707;padding:22px;
- border-bottom:2px solid #ff2020;
- text-align:center;
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top,
+        #32106b 0%,
+        #10051f 45%,
+        #050208 100%);
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
 }
-header h1{color:#ff2525;margin:0}
-header p{color:#aaa}
-.container{padding:18px;max-width:650px;margin:auto}
-.card{
- background:#171717;padding:18px;
- border:1px solid #4b1717;
- border-radius:14px;margin-bottom:15px;
+
+.container {
+    width: 100%;
+    max-width: 460px;
 }
-h3{color:#ff3030;margin-top:0}
-input,select{
- width:100%;padding:12px;margin:8px 0;
- background:#090909;color:white;
- border:1px solid #aa2222;border-radius:8px;
+
+.card {
+    background: rgba(15, 8, 30, 0.95);
+
+    border: 1px solid #743cff;
+
+    border-radius: 22px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 0 35px rgba(125, 55, 255, 0.35);
 }
-button{
- background:#d71920;color:white;border:0;
- padding:12px;border-radius:8px;width:100%;
- font-weight:bold;margin-top:8px;
+
+.logo {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+
+    background: linear-gradient(
+        90deg,
+        #9b5cff,
+        #ff4bd8
+    );
+
+    -webkit-background-clip: text;
+    color: transparent;
 }
-.result{color:#ff4545;font-size:18px}
-.stat{display:flex;justify-content:space-between}
-footer{text-align:center;color:#777;padding:20px}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+
+    margin: 8px 0 25px;
+}
+
+label {
+    display: block;
+
+    margin-top: 16px;
+    margin-bottom: 7px;
+
+    color: #ddd;
+}
+
+select {
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    border: 1px solid #49317d;
+
+    background: #10091e;
+
+    color: white;
+
+    outline: none;
+}
+
+select:focus {
+    border-color: #a36cff;
+}
+
+.generate {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #713cff,
+            #c52fff
+        );
+}
+
+.generate:hover {
+    opacity: .9;
+}
+
+.result {
+    display: none;
+
+    margin-top: 25px;
+}
+
+.result-title {
+    text-align: center;
+
+    color: #c69cff;
+
+    margin-bottom: 12px;
+}
+
+.setting {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 13px;
+
+    margin: 8px 0;
+
+    border-radius: 10px;
+
+    background: #10091e;
+
+    border: 1px solid #30204f;
+}
+
+.value {
+    color: #d09cff;
+
+    font-weight: bold;
+
+    font-size: 17px;
+}
+
+.info {
+    text-align: center;
+
+    color: #888;
+
+    font-size: 12px;
+
+    margin-top: 20px;
+}
+
+.error {
+    color: #ff7b7b;
+
+    text-align: center;
+
+    margin-top: 15px;
+}
+
 </style>
 </head>
+
 <body>
-<header>
-<h1>DEMON X</h1>
-<p>ULTIMATE GAMING PANEL V3.0</p>
-</header>
 
 <div class="container">
-<div class="card" id="auth">
-<h3>👑 DEMON X ACCOUNT</h3>
 
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password (8+ characters)">
-
-<button onclick="auth('signup')">CREATE ACCOUNT</button>
-<button onclick="auth('login')">LOGIN</button>
-
-<p id="authMsg"></p>
-<button onclick="logout()">LOGOUT</button>
-</div>
 <div class="card">
-<h3>🎯 SMART SENSITIVITY GENERATOR</h3>
-<label>Device</label>
-<select id="device">
-<option>OPPO</option>
-<<<<<<< HEAD
-<option>REALME</option>
-<option>REDMI</option>
-<option>SAMSUNG</option>
-<option>TECHNO</option>
-<option>OTHER</option>
-=======
-<option>Samsung</option>
-<option>Vivo</option>
-<option>Realme</option>
-<option>Redmi</option>
-<option>iPhone</option>
-<option>TECHNO</option>
-<option>Other</option>
->>>>>>> d6211a2 (updated templates)
+
+<div class="logo">
+SMART SENSITIVITY
+</div>
+
+<div class="subtitle">
+Automatic Sensitivity Generator
+</div>
+
+
+<label>📱 Choose Phone Model</label>
+
+<select id="phone">
+
+<option value="oppo_a16">
+OPPO A16
+</option>
+
+<option value="oppo_a6x_5g">
+OPPO A6x 5G
+</option>
+
+<option value="redmi_note">
+Redmi Note Series
+</option>
+
+<option value="realme_c">
+realme C Series
+</option>
+
+<option value="samsung_a">
+Samsung A Series
+</option>
+
+<option value="other">
+Other Phone
+</option>
+
 </select>
 
-<label>Playing Style</label>
-<select id="style">
-<option value="balanced">Balanced</option>
-<option value="fast">Fast Drag</option>
-<option value="steady">Steady Aim</option>
+
+<label>💾 Choose RAM</label>
+
+<select id="ram">
+
+<option value="2">2 GB</option>
+<option value="3">3 GB</option>
+<option value="4" selected>4 GB</option>
+<option value="6">6 GB</option>
+<option value="8">8 GB</option>
+<option value="12">12 GB</option>
+
 </select>
 
-<button onclick="generate()">GENERATE SETTINGS</button>
-<div id="result" class="result"></div>
+
+<label>🎯 Play Style</label>
+
+<select id="mode">
+
+<option value="one_tap">
+One Tap
+</option>
+
+<option value="drag">
+Drag
+</option>
+
+<option value="balanced">
+Balanced
+</option>
+
+</select>
+
+
+<button
+class="generate"
+onclick="generateSensitivity()">
+
+⚡ GENERATE SENSITIVITY
+
+</button>
+
+
+<div class="error" id="error"></div>
+
+
+<div class="result" id="result">
+
+<div class="result-title">
+🔥 Recommended Settings
 </div>
 
-<div class="card">
-<h3>⚙️ CUSTOM SETTINGS</h3>
-<div id="settings"></div>
-<button onclick="copySettings()">COPY ALL SETTINGS</button>
+
+<div class="setting">
+<span>General</span>
+<span class="value" id="general">0</span>
 </div>
 
-<div class="card">
-<h3>📱 FIRE BUTTON SIZE</h3>
-<input id="fire" type="range" min="30" max="100" value="50"
-oninput="fireValue.innerText=this.value">
-<p>Size: <span id="fireValue">50</span></p>
+
+<div class="setting">
+<span>Red Dot</span>
+<span class="value" id="red_dot">0</span>
 </div>
 
-<div class="card">
-<h3>🏆 PRACTICE TRACKER</h3>
-<label>Practice sessions completed</label>
-<input type="number" id="sessions" min="0" value="0">
-<button onclick="savePractice()">SAVE PROGRESS</button>
-<p id="progress">Sessions: 0</p>
+
+<div class="setting">
+<span>2x Scope</span>
+<span class="value" id="scope_2x">0</span>
+</div>
+
+
+<div class="setting">
+<span>4x Scope</span>
+<span class="value" id="scope_4x">0</span>
+</div>
+
+
+<div class="setting">
+<span>Sniper</span>
+<span class="value" id="sniper">0</span>
+</div>
+
+
+<div class="setting">
+<span>Free Look</span>
+<span class="value" id="free_look">0</span>
 </div>
 
 </div>
 
-<footer>DEMON X PANEL V3.0 | GAMING SETTINGS</footer>
-async function auth(action){
- const username=document.getElementById('username').value;
- const password=document.getElementById('password').value;
 
- const res=await fetch('/'+action,{
-  method:'POST',
-  headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({username,password})
- });
+<div class="info">
+Generated values are recommendations.
+They do not modify or automate the game.
+</div>
 
- const data=await res.json();
- document.getElementById('authMsg').innerText=
- data.message||data.error;
-}
+</div>
 
-async function logout(){
- const res=await fetch('/logout',{method:'POST'});
- const data=await res.json();
- document.getElementById('authMsg').innerText=data.message;
-}
+</div>
+
+
 <script>
-let current={};
 
-function generate(){
- let s=document.getElementById('style').value;
- let base=s==='fast'?190:s==='steady'?155:175;
+async function generateSensitivity() {
 
- current={
- General:base,
- Red_Dot:Math.max(0,base-10),
- Scope_2x:Math.max(0,base-20),
- Scope_4x:Math.max(0,base-35),
- Sniper:Math.max(0,base-55)
- };
+    const phone =
+        document.getElementById("phone").value;
 
- document.getElementById('settings').innerHTML=
- Object.entries(current).map(([k,v])=>
- `<div class="stat"><span>${k}</span><b>${v}</b></div>`
- ).join('');
+    const ram =
+        document.getElementById("ram").value;
 
- document.getElementById('result').innerText=
- 'Settings generated for '+document.getElementById('device').value;
+    const mode =
+        document.getElementById("mode").value;
+
+    const error =
+        document.getElementById("error");
+
+    error.textContent = "";
+
+    try {
+
+        const response =
+            await fetch("/generate", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    phone: phone,
+                    ram: ram,
+                    mode: mode
+
+                })
+
+            });
+
+
+        if (!response.ok) {
+            throw new Error("Server error");
+        }
+
+
+        const data =
+            await response.json();
+
+        const settings =
+            data.settings;
+
+
+        document.getElementById("general")
+            .textContent = settings.general;
+
+        document.getElementById("red_dot")
+            .textContent = settings.red_dot;
+
+        document.getElementById("scope_2x")
+            .textContent = settings.scope_2x;
+
+        document.getElementById("scope_4x")
+            .textContent = settings.scope_4x;
+
+        document.getElementById("sniper")
+            .textContent = settings.sniper;
+
+        document.getElementById("free_look")
+            .textContent = settings.free_look;
+
+
+        document.getElementById("result")
+            .style.display = "block";
+
+    }
+
+    catch (e) {
+
+        error.textContent =
+            "⚠️ Server connect nahi ho raha.";
+
+    }
 }
 
-function copySettings(){
- if(!Object.keys(current).length){generate();}
- let txt=Object.entries(current).map(([k,v])=>k+': '+v).join('\n');
- if(navigator.clipboard){
- navigator.clipboard.writeText(txt).then(()=>alert('Copied!'));
- }else{alert(txt);}
-}
-
-function savePractice(){
- let n=Math.max(0,Number(document.getElementById('sessions').value)||0);
- localStorage.setItem('demonSessions',n);
- document.getElementById('progress').innerText='Sessions: '+n;
-}
-
-document.getElementById('progress').innerText=
-'Sessions: '+(localStorage.getItem('demonSessions')||0);
 </script>
-</body>
-</html>
 
+</body>
+
+</html>
 
 
 
