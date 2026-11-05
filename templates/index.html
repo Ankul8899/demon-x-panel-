@@ -1,111 +1,169 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DEMON X PANEL V4.0</title>
+<title>DEMON X PANEL V3.0</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#080808;color:white;font-family:Arial}
-header{text-align:center;color:#ff3030;font-size:26px;font-weight:bold;padding:20px}
-.card{background:#171717;padding:20px;border:1px solid #444;border-radius:14px;margin-bottom:18px}
-h3{color:#ff3030}
-input,select{width:100%;padding:13px;margin:9px 0;background:#252525;color:white;border:1px solid #555;border-radius:8px}
-button{width:100%;padding:14px;margin-top:12px;background:#e32636;color:white;border:0;border-radius:8px;font-weight:bold}
-.hidden{display:none}
-.result{white-space:pre-line;color:#00ff99;line-height:2}
-.switch{text-align:center;color:#aaa;margin-top:15px}
-.switch span{color:#ff3030}
+body{
+ margin:0;background:#090909;color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ background:#160707;padding:22px;
+ border-bottom:2px solid #ff2020;
+ text-align:center;
+}
+header h1{color:#ff2525;margin:0}
+header p{color:#aaa}
+.container{padding:18px;max-width:650px;margin:auto}
+.card{
+ background:#171717;padding:18px;
+ border:1px solid #4b1717;
+ border-radius:14px;margin-bottom:15px;
+}
+h3{color:#ff3030;margin-top:0}
+input,select{
+ width:100%;padding:12px;margin:8px 0;
+ background:#090909;color:white;
+ border:1px solid #aa2222;border-radius:8px;
+}
+button{
+ background:#d71920;color:white;border:0;
+ padding:12px;border-radius:8px;width:100%;
+ font-weight:bold;margin-top:8px;
+}
+.result{color:#ff4545;font-size:18px}
+.stat{display:flex;justify-content:space-between}
+footer{text-align:center;color:#777;padding:20px}
 </style>
 </head>
 <body>
+<header>
+<h1>DEMON X</h1>
+<p>ULTIMATE GAMING PANEL V3.0</p>
+</header>
 
-<header>👹 DEMON X PANEL V4.0</header>
+<div class="container">
+<div class="card" id="auth">
+<h3>👑 DEMON X ACCOUNT</h3>
 
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password (8+ characters)">
+
+<button onclick="auth('signup')">CREATE ACCOUNT</button>
+<button onclick="auth('login')">LOGIN</button>
+
+<p id="authMsg"></p>
+<button onclick="logout()">LOGOUT</button>
+</div>
 <div class="card">
-<h3>PHONE DETAILS</h3>
-
-<label>Brand</label>
-<select id="brand">
+<h3>🎯 SMART SENSITIVITY GENERATOR</h3>
+<label>Device</label>
+<select id="device">
 <option>OPPO</option>
-<option>Samsung</option>
-<option>Vivo</option>
-<option>Realme</option>
-<option>Redmi</option>
-<option>iPhone</option>
-<option>Other</option>
+<option>REALME</option>
+<option>REDMI</option>
+<option>SAMSUNG</option>
+<option>TECHNO</option>
+<option>OTHER</option>
 </select>
 
-<label>Phone Model</label>
-<input id="phone" placeholder="Enter phone model">
-
-<label>RAM</label>
-<select id="ram">
-<option>3 GB</option>
-<option>4 GB</option>
-<option>6 GB</option>
-<option>8 GB</option>
-<option>12 GB</option>
-</select>
-
-<label>Gaming Style</label>
+<label>Playing Style</label>
 <select id="style">
 <option value="balanced">Balanced</option>
-<option value="one-tap">One Tap</option>
-<option value="rush">Rush</option>
-<option value="sniper">Sniper</option>
+<option value="fast">Fast Drag</option>
+<option value="steady">Steady Aim</option>
 </select>
 
-<button onclick="generateSensitivity()">GENERATE SETTINGS</button>
-</div>
-
-<div class="card hidden" id="resultBox">
-<h3>GENERATOR RESULT</h3>
+<button onclick="generate()">GENERATE SETTINGS</button>
 <div id="result" class="result"></div>
-<button onclick="copySettings()">COPY ALL</button>
-<button onclick="generateSensitivity()">REGENERATE</button>
+</div>
+
+<div class="card">
+<h3>⚙️ CUSTOM SETTINGS</h3>
+<div id="settings"></div>
+<button onclick="copySettings()">COPY ALL SETTINGS</button>
+</div>
+
+<div class="card">
+<h3>📱 FIRE BUTTON SIZE</h3>
+<input id="fire" type="range" min="30" max="100" value="50"
+oninput="fireValue.innerText=this.value">
+<p>Size: <span id="fireValue">50</span></p>
+</div>
+
+<div class="card">
+<h3>🏆 PRACTICE TRACKER</h3>
+<label>Practice sessions completed</label>
+<input type="number" id="sessions" min="0" value="0">
+<button onclick="savePractice()">SAVE PROGRESS</button>
+<p id="progress">Sessions: 0</p>
 </div>
 
 </div>
 
-<script>
-async function generateSensitivity(){
- const phone=document.getElementById("phone").value.trim();
- if(!phone){alert("Enter phone model");return}
- try{
- const r=await fetch("/generate",{
- method:"POST",
- headers:{"Content-Type":"application/json"},
- body:JSON.stringify({
- brand:brand.value,
- phone,
- ram:ram.value,
- style:style.value
- })
+<footer>DEMON X PANEL V3.0 | GAMING SETTINGS</footer>
+async function auth(action){
+ const username=document.getElementById('username').value;
+ const password=document.getElementById('password').value;
+
+ const res=await fetch('/'+action,{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({username,password})
  });
- const d=await r.json();
- if(!r.ok)throw Error(d.error||"Generation failed");
- result.innerText=
-`PHONE: ${brand.value} ${phone}
-RAM: ${ram.value}
 
-GENERAL: ${d.general}
-RED DOT: ${d.red_dot}
-2X SCOPE: ${d.scope_2x}
-4X SCOPE: ${d.scope_4x}
-SNIPER: ${d.sniper}
-FREE LOOK: ${d.free_look}
-
-DPI: ${d.dpi}
-FIRE BUTTON: ${d.fire_button}%`;
- resultBox.classList.remove("hidden");
- }catch(e){alert(e.message)}
+ const data=await res.json();
+ document.getElementById('authMsg').innerText=
+ data.message||data.error;
 }
+
+async function logout(){
+ const res=await fetch('/logout',{method:'POST'});
+ const data=await res.json();
+ document.getElementById('authMsg').innerText=data.message;
+}
+<script>
+let current={};
+
+function generate(){
+ let s=document.getElementById('style').value;
+ let base=s==='fast'?190:s==='steady'?155:175;
+
+ current={
+ General:base,
+ Red_Dot:Math.max(0,base-10),
+ Scope_2x:Math.max(0,base-20),
+ Scope_4x:Math.max(0,base-35),
+ Sniper:Math.max(0,base-55)
+ };
+
+ document.getElementById('settings').innerHTML=
+ Object.entries(current).map(([k,v])=>
+ `<div class="stat"><span>${k}</span><b>${v}</b></div>`
+ ).join('');
+
+ document.getElementById('result').innerText=
+ 'Settings generated for '+document.getElementById('device').value;
+}
+
 function copySettings(){
- navigator.clipboard.writeText(result.innerText)
- .then(()=>alert("Copied!"))
- .catch(()=>alert("Copy failed"));
+ if(!Object.keys(current).length){generate();}
+ let txt=Object.entries(current).map(([k,v])=>k+': '+v).join('\n');
+ if(navigator.clipboard){
+ navigator.clipboard.writeText(txt).then(()=>alert('Copied!'));
+ }else{alert(txt);}
 }
+
+function savePractice(){
+ let n=Math.max(0,Number(document.getElementById('sessions').value)||0);
+ localStorage.setItem('demonSessions',n);
+ document.getElementById('progress').innerText='Sessions: '+n;
+}
+
+document.getElementById('progress').innerText=
+'Sessions: '+(localStorage.getItem('demonSessions')||0);
 </script>
 </body>
 </html>
