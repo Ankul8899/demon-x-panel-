@@ -1,440 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Smart Sensitivity Generator</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-
-    background:
-        radial-gradient(circle at top,
-        #32106b 0%,
-        #10051f 45%,
-        #050208 100%);
-
-    color: white;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 20px;
-}
-
-.container {
-    width: 100%;
-    max-width: 460px;
-}
-
-.card {
-    background: rgba(15, 8, 30, 0.95);
-
-    border: 1px solid #743cff;
-
-    border-radius: 22px;
-
-    padding: 25px;
-
-    box-shadow:
-        0 0 35px rgba(125, 55, 255, 0.35);
-}
-
-.logo {
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-
-    background: linear-gradient(
-        90deg,
-        #9b5cff,
-        #ff4bd8
-    );
-
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.subtitle {
-    text-align: center;
-    color: #aaa;
-
-    margin: 8px 0 25px;
-}
-
-label {
-    display: block;
-
-    margin-top: 16px;
-    margin-bottom: 7px;
-
-    color: #ddd;
-}
-
-select {
-    width: 100%;
-
-    padding: 13px;
-
-    border-radius: 11px;
-
-    border: 1px solid #49317d;
-
-    background: #10091e;
-
-    color: white;
-
-    outline: none;
-}
-
-select:focus {
-    border-color: #a36cff;
-}
-
-.generate {
-    width: 100%;
-
-    margin-top: 25px;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    background:
-        linear-gradient(
-            90deg,
-            #713cff,
-            #c52fff
-        );
-}
-
-.generate:hover {
-    opacity: .9;
-}
-
-.result {
-    display: none;
-
-    margin-top: 25px;
-}
-
-.result-title {
-    text-align: center;
-
-    color: #c69cff;
-
-    margin-bottom: 12px;
-}
-
-.setting {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding: 13px;
-
-    margin: 8px 0;
-
-    border-radius: 10px;
-
-    background: #10091e;
-
-    border: 1px solid #30204f;
-}
-
-.value {
-    color: #d09cff;
-
-    font-weight: bold;
-
-    font-size: 17px;
-}
-
-.info {
-    text-align: center;
-
-    color: #888;
-
-    font-size: 12px;
-
-    margin-top: 20px;
-}
-
-.error {
-    color: #ff7b7b;
-
-    text-align: center;
-
-    margin-top: 15px;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DEMON X Sensitivity Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, #25104a 0%, #090912 45%, #050509 100%);
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            color: #b56cff;
+            text-shadow: 0 0 20px #8b2cff;
+        }
+
+        .header p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: rgba(20, 20, 35, 0.92);
+            border: 1px solid rgba(170, 80, 255, 0.4);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 0 35px rgba(120, 30, 255, 0.18);
+        }
+
+        .group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: 1px solid #3b3150;
+            outline: none;
+            background: #11111c;
+            color: white;
+            font-size: 15px;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 8px;
+            background: linear-gradient(90deg, #7c3aed, #c026d3);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            color: #c084fc;
+            margin-top: 18px;
+        }
+
+        #result {
+            display: none;
+            margin-top: 22px;
+        }
+
+        .result-title {
+            text-align: center;
+            color: #c084fc;
+            margin-bottom: 15px;
+        }
+
+        .device-info {
+            background: #11111c;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #30263e;
+        }
+
+        .device-info p {
+            color: #ccc;
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .device-info span {
+            color: white;
+            font-weight: bold;
+        }
+
+        .sensitivity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .setting {
+            background: #151522;
+            border: 1px solid #30263e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .setting-name {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .value {
+            color: #d8b4fe;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .error {
+            display: none;
+            background: #35151b;
+            border: 1px solid #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="card">
-
-<div class="logo">
-SMART SENSITIVITY
-</div>
-
-<div class="subtitle">
-Automatic Sensitivity Generator
-</div>
-
-
-<label>📱 Choose Phone Model</label>
-
-<select id="phone">
-
-<option value="oppo_a16">
-OPPO A16
-</option>
-
-<option value="oppo_a6x_5g">
-OPPO A6x 5G
-</option>
-
-<option value="techno_spark">
-TECHNO SPARK
-</option>
-<option value="redmi_note">
-Redmi Note Series
-</option>
-
-<option value="realme_c">
-realme C Series
-</option>
-
-<option value="samsung_a">
-Samsung A Series
-</option>
-
-<option value="other">
-Other Phone
-</option>
-
-</select>
-
-
-<label>💾 Choose RAM</label>
-
-<select id="ram">
-
-<option value="4" selected>4 GB</option>
-<option value="5">5 GB</option>
-<option value="6">6 GB</option>
-<option value="8">8 GB</option>
-<option value="12">12 GB</option>
-
-</select>
-
-
-<label>🎯 Play Style</label>
-
-<select id="mode">
-
-<option value="one_tap">
-One Tap
-</option>
-
-<option value="drag">
-Drag
-</option>
-
-<option value="balanced">
-Balanced
-</option>
-
-</select>
-
-
-<button
-class="generate"
-onclick="generateSensitivity()">
-
-⚡ GENERATE SENSITIVITY
-
-</button>
-
-
-<div class="error" id="error"></div>
-
-
-<div class="result" id="result">
-
-<div class="result-title">
-🔥 Recommended Settings
-</div>
-
-
-<div class="setting">
-<span>General</span>
-<span class="value" id="general">0</span>
-</div>
-
-
-<div class="setting">
-<span>Red Dot</span>
-<span class="value" id="red_dot">0</span>
-</div>
-
-
-<div class="setting">
-<span>2x Scope</span>
-<span class="value" id="scope_2x">0</span>
-</div>
-
-
-<div class="setting">
-<span>4x Scope</span>
-<span class="value" id="scope_4x">0</span>
-</div>
-
-
-<div class="setting">
-<span>Sniper</span>
-<span class="value" id="sniper">0</span>
-</div>
-
-
-<div class="setting">
-<span>Free Look</span>
-<span class="value" id="free_look">0</span>
-</div>
-
-</div>
-
-
-<div class="info">
-Generated values are recommendations.
-They do not modify or automate the game.
-</div>
-
-</div>
-
-</div>
-
-
-<script>
-
-async function generateSensitivity() {
-
-    const phone =
-        document.getElementById("phone").value;
-
-    const ram =
-        document.getElementById("ram").value;
-
-    const mode =
-        document.getElementById("mode").value;
-
-    const error =
-        document.getElementById("error");
-
-    error.textContent = "";
-
-    try {
-
-        const response =
-            await fetch("/generate", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    phone: phone,
-                    ram: ram,
-                    mode: mode
-
-                })
-
-            });
-
-
-        if (!response.ok) {
-            throw new Error("Server error");
-        }
-
-
-        const data =
-            await response.json();
-
-        const settings =
-            data.settings;
-
-
-        document.getElementById("general")
-            .textContent = settings.general;
-
-        document.getElementById("red_dot")
-            .textContent = settings.red_dot;
-
-        document.getElementById("scope_2x")
-            .textContent = settings.scope_2x;
-
-        document.getElementById("scope_4x")
-            .textContent = settings.scope_4x;
-
-        document.getElementById("sniper")
-            .textContent = settings.sniper;
-
-        document.getElementById("free_look")
-            .textContent = settings.free_look;
-
-
-        document.getElementById("result")
-            .style.display = "block";
-
-    }
-
-    catch (e) {
-
-        error.textContent =
-            "⚠️ Server connect nahi ho raha.";
-
-    }
-}
-
-</script>
-
-</body>
-
-</html>
-
-
-
-
-
+    <div class="header">
+        <h1>DEMON X</h1>
+        <p>Smart Sensitivity Generator</p>
+    </div>
+
+    <div class="card">
+
+        <div class="group">
+            <label for="phone">Phone Model</label>
+
+            <select id="phone">
+                <option value="Oppo A6x 5G">Oppo A6x 5G</option>
+                <option value="Oppo A16">Oppo A16</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Redmi">Redmi</option>
+                <option value="Realme">Realme</option>
+                <option value="Vivo">Vivo</option>
+                <option value="OnePlus">OnePlus</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label for="ram">RAM</label>
+
+            <select id="ram">
+                <option value="2">2 GB</option>
+                <option value="3">3 GB</option>
+                <option value="4" selected>4 GB</option>
+                <option value="6">6 GB</option>
+                <option value="8">8 GB</option>
+                <option value="12">12 GB</option>
+                <option value="16">16 GB</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label for="dpi">DPI</label>
+
+            <input
+                type="number"
+                id="dpi"
+                value="400"
+                min="100"
+                max="1000"
+                placeholder="Enter DPI">
+        </div>
+
+        <div class="group">
+            <label for="mode">Aim Mode</label>
+
+            <select id="mode">
+                <option value="one_tap">One Tap</option>
+                <option value="drag">Drag</option>
+                <option value="balanced">Balanced</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label for="fire_button">
+                Fire Button Size
+            </label>
+
+            <input
+                type="number"
+                id="fire_button"
+                value="50"
+                min="1"
+                max="100"
+                placeholder="50">
+        </div>
+
+        <button onclick="generateSensitivity()">
+            GENERATE SENSITIVITY
+        </button>
+
+        <div id="loading">
+            Generating sensitivity...
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <div id="result">
+
+            <h2 class="result-title">
+                Your Sensitivity
+            </h2>
+
+            <div class="device-info">
+
+                <p>
+                    Phone:
+                    <span id="r-phone"></span>
+                </p>
+
+                <p>
+                    RAM:
+                    <span id="r-ram"></span>
+                </p>
+
+                <p>
+                    DPI:
+                    <span id="r-dpi"></span>
+                </p>
+
+                <p>
+                    Mode:
+                    <span id="r-mode"></span>
+                </p>
+
+                <p>
+                    Fire Button:
+                    <span id="r-fire"></span>
+                </p>
+
+            </div>
+
+            <div class="sensitivity-grid">
+
+                <div class="setting full">
+                    <div class="setting-name">
+                        GENERAL
+                    </div>
+
+                    <div class="value" id="general">
+                        0
+                    </div>
+                </div>
+
+                <div class="setting">
+                    <div class="setting-name">
+                        RED DOT
+                    </div>
+
+                    <div class="value" id="red_dot">
+                        0
+                    </div>
+                </div>
+
+                <div class="setting">
+                    <div class="setting-name">
+                        2X SCOPE
+                    </div>
+
+                    <
 
