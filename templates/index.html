@@ -1,322 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Demon X Sensitivity Generator</title>
+<title>DEMON X Sensitivity Generator</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: #0b0b0b;
-            color: white;
-            padding: 25px 15px;
-        }
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #050505, #111827, #020617);
+    color: white;
+    padding: 20px;
+}
 
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: auto;
-        }
+.container {
+    max-width: 500px;
+    margin: auto;
+}
 
-        .title {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+.logo {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #00e5ff;
+    text-shadow: 0 0 20px #00e5ff;
+    margin-bottom: 8px;
+}
 
-        .title h1 {
-            margin: 0;
-            font-size: 30px;
-        }
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 25px;
+}
 
-        .title p {
-            color: #aaa;
-            margin-top: 8px;
-        }
+.card {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid #263449;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.08);
+}
 
-        .card {
-            background: #151515;
-            border: 1px solid #292929;
-            border-radius: 18px;
-            padding: 22px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,.35);
-        }
+label {
+    display: block;
+    color: #00e5ff;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: white;
+    outline: none;
+    margin-bottom: 17px;
+    font-size: 15px;
+}
 
-        select {
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 18px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            background: #0d0d0d;
-            color: white;
-            outline: none;
-        }
+button {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0, 174, 255, 0.35);
+}
 
-        select:focus {
-            border-color: #777;
-        }
+button:active {
+    transform: scale(0.98);
+}
 
-        .modes {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
-        }
+.result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
-        .mode {
-            padding: 13px 5px;
-            border: 1px solid #333;
-            border-radius: 10px;
-            background: #0d0d0d;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-        }
+.box {
+    background: #020617;
+    border: 1px solid #263449;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
 
-        .mode.active {
-            border-color: white;
-            background: #252525;
-        }
+.box span {
+    display: block;
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            border: 0;
-            border-radius: 10px;
-            background: white;
-            color: black;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.box strong {
+    color: #00e5ff;
+    font-size: 24px;
+}
 
-        button:active {
-            transform: scale(.98);
-        }
+.sensitivity {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
 
-        .result {
-            display: none;
-        }
+.sens-box {
+    background: #020617;
+    border-radius: 10px;
+    padding: 13px;
+    border-left: 3px solid #00e5ff;
+}
 
-        .setting {
-            background: #0d0d0d;
-            border: 1px solid #292929;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
+.sens-box span {
+    color: #aaa;
+    font-size: 13px;
+}
 
-        .setting span {
-            display: block;
-            color: #999;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
+.sens-box strong {
+    display: block;
+    color: white;
+    font-size: 20px;
+    margin-top: 5px;
+}
 
-        .setting strong {
-            font-size: 22px;
-        }
-
-        .sens-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .regen {
-            margin-top: 15px;
-        }
-
-        .status {
-            text-align: center;
-            color: #aaa;
-            margin: 10px 0;
-            min-height: 20px;
-        }
-
-        @media(max-width: 400px) {
-            .modes {
-                grid-template-columns: 1fr;
-            }
-
-            .sens-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+.status {
+    text-align: center;
+    color: #22c55e;
+    margin-top: 15px;
+    font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="title">
-        <h1>DEMON X</h1>
-        <p>Sensitivity Generator</p>
+    <div class="logo">⚡ DEMON X</div>
+
+    <div class="subtitle">
+        Smart Sensitivity Generator
     </div>
 
+    <!-- INPUT CARD -->
     <div class="card">
 
-        <label>Phone Brand</label>
+        <label>📱 Select Phone</label>
 
         <select id="phone">
+            <option value="low">Low-End Phone</option>
+            <option value="mid">Mid-Range Phone</option>
+            <option value="high">High-End Phone</option>
             <option value="oppo">OPPO</option>
-            <option value="vivo">Vivo</option>
+            <option value="redmi">Redmi</option>
             <option value="realme">Realme</option>
             <option value="samsung">Samsung</option>
-            <option value="xiaomi">Xiaomi</option>
+            <option value="vivo">Vivo</option>
             <option value="oneplus">OnePlus</option>
-            <option value="iqoo">iQOO</option>
-            <option value="other">Other</option>
         </select>
 
 
-        <label>RAM</label>
+        <label>💾 RAM</label>
 
         <select id="ram">
-            <option value="2">2 GB</option>
             <option value="3">3 GB</option>
             <option value="4">4 GB</option>
-            <option value="6" selected>6 GB</option>
+            <option value="6">6 GB</option>
             <option value="8">8 GB</option>
             <option value="12">12 GB</option>
             <option value="16">16 GB</option>
         </select>
 
 
-        <label>Phone Model</label>
+        <label>🎯 One Tap / Drag Mode</label>
 
-        <select id="model">
-            <option value="Oppo A16">Oppo A16</option>
-            <option value="Oppo A6x 5G">Oppo A6x 5G</option>
-            <option value="Vivo Y Series">Vivo Y Series</option>
-            <option value="Realme C Series">Realme C Series</option>
-            <option value="Samsung A Series">Samsung A Series</option>
-            <option value="Vivo Y21 5G">Vivo Y21 5G</option>
-            <option value="Redmi Note Series">Redmi Note Series</option>
-            <option value="OnePlus Nord">OnePlus Nord</option>
-            <option value="Custom">Custom Model</option>
+        <select id="mode">
+            <option value="one">One Tap</option>
+            <option value="drag">Drag</option>
+            <option value="balanced">Balanced</option>
         </select>
 
 
-        <label>Control Style</label>
+        <label>📱 Phone Model</label>
 
-        <div class="modes">
+        <select id="model">
 
-            <div class="mode active"
-                 data-mode="one_tap"
-                 onclick="selectMode(this)">
-                ONE TAP
-            </div>
+            <option value="a16">OPPO A16</option>
+            <option value="a6x">OPPO A6x 5G</option>
 
-            <div class="mode"
-                 data-mode="drag"
-                 onclick="selectMode(this)">
-                DRAG
-            </div>
+            <option value="redmi12">Redmi 12</option>
+            <option value="redmi13">Redmi 13</option>
 
-            <div class="mode"
-                 data-mode="balanced"
-                 onclick="selectMode(this)">
-                BALANCED
-            </div>
+            <option value="realmec">Realme C Series</option>
 
-        </div>
+            <option value="samsungm">Samsung M Series</option>
 
-        <button onclick="generateSettings()">
-            GENERATE SENSITIVITY
+            <option value="vivo">Vivo Y Series</option>
+
+            <option value="oneplus">OnePlus Nord</option>
+
+            <option value="custom">Custom Device</option>
+
+        </select>
+
+        <button onclick="generateSensitivity()">
+            ⚡ GENERATE SENSITIVITY
         </button>
-
-        <div class="status" id="status"></div>
 
     </div>
 
 
-    <div class="card result" id="result">
+    <!-- DPI + FIRE BUTTON -->
+    <div class="card">
 
-        <h2>Generated Settings</h2>
+        <div class="result">
 
-        <div class="setting">
-            <span>Phone</span>
-            <strong id="rPhone"></strong>
+            <div class="box">
+                <span>Recommended DPI</span>
+                <strong id="dpi">---</strong>
+            </div>
+
+            <div class="box">
+                <span>Fire Button Size</span>
+                <strong id="fire">---</strong>
+            </div>
+
         </div>
 
-        <div class="setting">
-            <span>RAM</span>
-            <strong id="rRam"></strong>
-        </div>
+    </div>
 
-        <div class="setting">
-            <span>Phone Model</span>
-            <strong id="rModel"></strong>
-        </div>
 
-        <div class="setting">
-            <span>DPI</span>
-            <strong id="rDpi"></strong>
-        </div>
+    <!-- SENSITIVITY -->
+    <div class="card">
 
-        <div class="setting">
-            <span>Fire Button Size</span>
-            <strong id="rFire"></strong>
-        </div>
+        <label>🎮 Sensitivity</label>
 
-        <h3>Sensitivity</h3>
+        <div class="sensitivity">
 
-        <div class="sens-grid">
-
-            <div class="setting">
+            <div class="sens-box">
                 <span>General</span>
-                <strong id="general"></strong>
+                <strong id="general">---</strong>
             </div>
 
-            <div class="setting">
+            <div class="sens-box">
                 <span>Red Dot</span>
-                <strong id="red_dot"></strong>
+                <strong id="redDot">---</strong>
             </div>
 
-            <div class="setting">
+            <div class="sens-box">
                 <span>2X Scope</span>
-                <strong id="scope2"></strong>
+                <strong id="twoX">---</strong>
             </div>
 
-            <div class="setting">
+            <div class="sens-box">
                 <span>4X Scope</span>
-                <strong id="scope4"></strong>
+                <strong id="fourX">---</strong>
             </div>
 
-            <div class="setting">
-                <span>Sniper</span>
-                <strong id="sniper"></strong>
+            <div class="sens-box">
+                <span>Sniper Scope</span>
+                <strong id="sniper">---</strong>
             </div>
 
-            <div class="setting">
+            <div class="sens-box">
                 <span>Free Look</span>
-                <strong id="free"></strong>
+                <strong id="freeLook">---</strong>
             </div>
 
         </div>
 
-        <button class="regen"
-                onclick="generateSettings()">
-            🔄 REGENERATE
+        <div class="status" id="status">
+            Select settings and generate
+        </div>
+
+    </div>
+
+
+    <!-- REGENERATE -->
+    <div class="card">
+
+        <button onclick="generateSensitivity()">
+            🔄 REGENERATE SETTINGS
         </button>
 
     </div>
@@ -326,106 +304,183 @@
 
 <script>
 
-let selectedMode = "one_tap";
-
-
-function selectMode(element) {
-
-    document.querySelectorAll(".mode")
-        .forEach(x => x.classList.remove("active"));
-
-    element.classList.add("active");
-
-    selectedMode = element.dataset.mode;
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
-async function generateSettings() {
+function generateSensitivity() {
 
-    const status = document.getElementById("status");
+    let phone = document.getElementById("phone").value;
+    let ram = parseInt(document.getElementById("ram").value);
+    let mode = document.getElementById("mode").value;
+    let model = document.getElementById("model").value;
 
-    status.innerText = "Generating settings...";
-
-    const data = {
-        phone: document.getElementById("phone").value,
-        ram: document.getElementById("ram").value,
-        model: document.getElementById("model").value,
-        mode: selectedMode
-    };
-
-
-    try {
-
-        const response = await fetch("/generate", {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify(data)
-        });
+    let dpi;
+    let fire;
+    let general;
+    let redDot;
+    let twoX;
+    let fourX;
+    let sniper;
+    let freeLook;
 
 
-        const result = await response.json();
+    /* -------------------------
+       BASE DPI
+    ------------------------- */
 
-
-        document.getElementById("rPhone").innerText =
-            result.phone.toUpperCase();
-
-        document.getElementById("rRam").innerText =
-            result.ram + " GB";
-
-        document.getElementById("rModel").innerText =
-            result.model;
-
-        document.getElementById("rDpi").innerText =
-            result.dpi;
-
-        document.getElementById("rFire").innerText =
-            result.fire_button;
-
-
-        document.getElementById("general").innerText =
-            result.sensitivity.general;
-
-        document.getElementById("red_dot").innerText =
-            result.sensitivity.red_dot;
-
-        document.getElementById("scope2").innerText =
-            result.sensitivity["2x"];
-
-        document.getElementById("scope4").innerText =
-            result.sensitivity["4x"];
-
-        document.getElementById("sniper").innerText =
-            result.sensitivity.sniper;
-
-        document.getElementById("free").innerText =
-            result.sensitivity.free_look;
-
-
-        document.getElementById("result").style.display =
-            "block";
-
-        status.innerText = "Settings generated successfully.";
-
-        document.getElementById("result")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    } catch (error) {
-
-        status.innerText =
-            "Error: Server is not running.";
-
+    if (ram <= 3) {
+        dpi = randomNumber(380, 420);
     }
+
+    else if (ram <= 4) {
+        dpi = randomNumber(400, 450);
+    }
+
+    else if (ram <= 6) {
+        dpi = randomNumber(420, 480);
+    }
+
+    else if (ram <= 8) {
+        dpi = randomNumber(450, 520);
+    }
+
+    else {
+        dpi = randomNumber(480, 560);
+    }
+
+
+    /* -------------------------
+       PHONE MODEL ADJUSTMENT
+    ------------------------- */
+
+    if (model === "a16") {
+        dpi -= 20;
+    }
+
+    if (model === "a6x") {
+        dpi += 10;
+    }
+
+    if (model === "redmi12") {
+        dpi += 5;
+    }
+
+    if (model === "redmi13") {
+        dpi += 10;
+    }
+
+    if (model === "oneplus") {
+        dpi += 20;
+    }
+
+
+    /* -------------------------
+       MODE SETTINGS
+    ------------------------- */
+
+    if (mode === "one") {
+
+        general = randomNumber(190, 200);
+        redDot = randomNumber(185, 200);
+        twoX = randomNumber(175, 190);
+        fourX = randomNumber(165, 180);
+        sniper = randomNumber(95, 115);
+        freeLook = randomNumber(180, 200);
+
+        fire = randomNumber(48, 55);
+    }
+
+
+    else if (mode === "drag") {
+
+        general = randomNumber(180, 195);
+        redDot = randomNumber(175, 190);
+        twoX = randomNumber(165, 180);
+        fourX = randomNumber(155, 175);
+        sniper = randomNumber(90, 110);
+        freeLook = randomNumber(170, 190);
+
+        fire = randomNumber(50, 58);
+    }
+
+
+    else {
+
+        general = randomNumber(185, 198);
+        redDot = randomNumber(180, 195);
+        twoX = randomNumber(170, 185);
+        fourX = randomNumber(160, 178);
+        sniper = randomNumber(90, 112);
+        freeLook = randomNumber(175, 195);
+
+        fire = randomNumber(48, 56);
+    }
+
+
+    /* -------------------------
+       PHONE TYPE ADJUSTMENT
+    ------------------------- */
+
+    if (phone === "low") {
+
+        general -= 5;
+        redDot -= 5;
+        twoX -= 5;
+        fourX -= 5;
+    }
+
+    if (phone === "high") {
+
+        general += 2;
+        redDot += 2;
+        twoX += 2;
+    }
+
+
+    /* -------------------------
+       LIMIT VALUES
+    ------------------------- */
+
+    dpi = Math.max(350, Math.min(dpi, 600));
+
+    general = Math.max(0, Math.min(general, 200));
+    redDot = Math.max(0, Math.min(redDot, 200));
+    twoX = Math.max(0, Math.min(twoX, 200));
+    fourX = Math.max(0, Math.min(fourX, 200));
+    sniper = Math.max(0, Math.min(sniper, 200));
+    freeLook = Math.max(0, Math.min(freeLook, 200));
+
+
+    /* -------------------------
+       DISPLAY
+    ------------------------- */
+
+    document.getElementById("dpi").innerText = dpi;
+
+    document.getElementById("fire").innerText = fire + "%";
+
+    document.getElementById("general").innerText = general;
+
+    document.getElementById("redDot").innerText = redDot;
+
+    document.getElementById("twoX").innerText = twoX;
+
+    document.getElementById("fourX").innerText = fourX;
+
+    document.getElementById("sniper").innerText = sniper;
+
+    document.getElementById("freeLook").innerText = freeLook;
+
+
+    document.getElementById("status").innerText =
+        "✓ New settings generated successfully";
+
 }
 
 </script>
 
 </body>
 </html>
-
 
