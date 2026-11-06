@@ -2,69 +2,86 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-def generate_sensitivity(phone, ram, dpi, mode, fire_button):
-    dpi = int(dpi)
-    fire_button = int(fire_button)
+
+def generate_settings(phone, ram, mode, model):
     ram = int(ram)
 
-    # Base sensitivity
-    if dpi < 350:
+    # Base values according to RAM
+    if ram <= 3:
+        base = 165
+    elif ram <= 4:
         base = 175
-    elif dpi < 450:
+    elif ram <= 6:
         base = 185
-    elif dpi < 550:
+    elif ram <= 8:
         base = 195
     else:
         base = 200
 
-    # RAM adjustment
-    if ram <= 3:
-        base -= 8
-    elif ram >= 8:
-        base += 3
+    # Phone type adjustment
+    phone_adjust = {
+        "oppo": 2,
+        "vivo": 2,
+        "realme": 3,
+        "samsung": 0,
+        "xiaomi": 2,
+        "oneplus": 4,
+        "iqoo": 4,
+        "other": 0
+    }
+
+    base += phone_adjust.get(phone.lower(), 0)
 
     # Mode adjustment
-    if mode == "one_tap":
-        general = base + 5
-        red_dot = base
-        scope_2x = base - 8
-        scope_4x = base - 18
-        sniper = base - 30
-    elif mode == "drag":
-        general = base
-        red_dot = base - 5
-        scope_2x = base - 12
-        scope_4x = base - 22
-        sniper = base - 35
-    else:
-        general = base
-        red_dot = base - 3
-        scope_2x = base - 10
-        scope_4x = base - 20
-        sniper = base - 32
+    mode_adjust = {
+        "one_tap": 8,
+        "drag": 3,
+        "balanced": 0
+    }
 
-    values = [
-        general,
-        red_dot,
-        scope_2x,
-        scope_4x,
-        sniper
-    ]
+    base += mode_adjust.get(mode, 0)
 
-    values = [max(0, min(200, x)) for x in values]
+    # Keep sensitivity inside 1-200
+    base = max(1, min(base, 200))
+
+    # Different sensitivity values
+    sensitivity = {
+        "general": base,
+        "red_dot": max(1, min(base + 2, 200)),
+        "2x": max(1, min(base - 5, 200)),
+        "4x": max(1, min(base - 10, 200)),
+        "sniper": max(1, min(base - 20, 200)),
+        "free_look": max(1, min(base + 5, 200))
+    }
+
+    # DPI
+    dpi = {
+        "one_tap": 480,
+        "drag": 430,
+        "balanced": 400
+    }.get(mode, 400)
+
+    # RAM adjustment
+    if ram >= 8:
+        dpi += 20
+    elif ram <= 3:
+        dpi -= 20
+
+    # Fire button
+    fire_button = {
+        "one_tap": 48,
+        "drag": 52,
+        "balanced": 50
+    }.get(mode, 50)
 
     return {
         "phone": phone,
-        "ram": f"{ram} GB",
-        "dpi": dpi,
+        "ram": ram,
+        "model": model,
         "mode": mode,
+        "dpi": dpi,
         "fire_button": fire_button,
-        "general": values[0],
-        "red_dot": values[1],
-        "scope_2x": values[2],
-        "scope_4x": values[3],
-        "sniper": values[4],
-        "free_look": max(0, min(200, base + 10))
+        "sensitivity": sensitivity
     }
 
 
@@ -77,17 +94,22 @@ def home():
 def generate():
     data = request.get_json()
 
-    result = generate_sensitivity(
-        data.get("phone", "Unknown"),
-        data.get("ram", 4),
-        data.get("dpi", 400),
-        data.get("mode", "balanced"),
-        data.get("fire_button", 50)
+    phone = data.get("phone")
+    ram = data.get("ram")
+    mode = data.get("mode")
+    model = data.get("model")
+
+    result = generate_settings(
+        phone,
+        ram,
+        mode,
+        model
     )
 
     return jsonify(result)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
+
 
